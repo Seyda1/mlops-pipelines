@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:13
+    container_name: mlflow-postgres
+    environment:
+      POSTGRES_USER: mlflow
+      POSTGRES_PASSWORD: mlflow123
+      POSTGRES_DB: mlflowdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ml-network
+
+  mlflow:
+    build:
+      context: ./mlflow
+      dockerfile: Dockerfile
+    container_name: mlflow
+    ports:
+      - "5000:5000"
+    networks:
+      - ml-network
+    volumes:
+      - ./mlflow:/mlflow/mlruns
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  airflow:
+    build:
+      context: ./airflow
+      dockerfile: Dockerfile.airflow
+    container_name: airflow
+    depends_on:
+      - mlflow
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./start.sh:/start.sh
+    ports:
+      - "8080:8080"
+    command: ["bash", "/start.sh"]
+    networks:
+      - ml-network
+
+volumes:
+  postgres_data:
+
+networks:
+  ml-network:
+    external: true
