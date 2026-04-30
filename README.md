@@ -72,6 +72,26 @@ I will continuously improve it by adding new concepts, tools, and best practices
 - Anyone interested in how ML systems are built in practice
 
 ---
+## ⚠️ Dependency Notes (MLflow Version)
+
+This project uses a pinned version of MLflow:
+
+mlflow==3.4.0
+
+### Why not MLflow 3.5.0?
+
+MLflow 3.5.0 introduces a new security layer that may require additional configuration, especially in Docker-based or network-restricted environments.
+
+### References
+
+- MLflow 3.5.0 release notes: https://mlflow.org/releases/3.5.0/
+- Related discussion and issues: https://github.com/mlflow/mlflow/issues/16659
+
+### Current Choice
+
+For simplicity and stable learning setup, this project uses MLflow 3.4.0 to avoid extra configuration complexity during early stages.
+
+This decision may be updated in the future as the project evolves.
 
 ## ⭐ Note
 
