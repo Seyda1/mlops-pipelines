@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Installing dependencies..."
-pip install docker mlflow
+pip install -r requirements.txt
 
 echo "Initializing Airflow DB..."
 airflow db init
