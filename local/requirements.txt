@@ -1,0 +1,7 @@
+packaging==26.0
+docker
+mlflow
+apache-airflow
+pandas
+numpy
+scikit-learn
